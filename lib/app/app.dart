@@ -16,6 +16,7 @@ class _State extends State<PortfolioApp> {
   Widget build(BuildContext context) => MaterialApp.router(
         routerConfig: _router.config(),
         debugShowCheckedModeBanner: false,
+        theme: ThemeData(fontFamily: 'MavenPro'),
         title: 'Ricardo Brunetto',
       );
 }
