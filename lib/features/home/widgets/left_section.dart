@@ -6,16 +6,30 @@ class LeftSection extends StatelessWidget {
   const LeftSection({Key? key}) : super(key: key);
 
   @override
-  Widget build(BuildContext context) => Padding(
-        padding: const EdgeInsets.symmetric(horizontal: 24),
-        child: Column(
-          crossAxisAlignment: CrossAxisAlignment.start,
-          children: const [
-            _Name(),
-            _Buttons(),
-            _Stats(),
-          ],
+  Widget build(BuildContext context) => Scaffold(
+        body: Padding(
+          padding: const EdgeInsets.symmetric(horizontal: 24),
+          child: Column(
+            mainAxisAlignment: MainAxisAlignment.center,
+            crossAxisAlignment: CrossAxisAlignment.start,
+            children: const [
+              _Name(),
+              _Buttons(),
+              _Stats(),
+            ],
+          ),
         ),
+        bottomNavigationBar: const _Bottom(),
+      );
+}
+
+class _Bottom extends StatelessWidget {
+  const _Bottom({Key? key}) : super(key: key);
+
+  @override
+  Widget build(BuildContext context) => Container(
+        height: 300,
+        color: RPColors.dark,
       );
 }
 
@@ -31,21 +45,26 @@ class _Stats extends StatelessWidget {
             subtitle: 'Clients on work worldwide',
           ),
           const SizedBox(height: 24),
-          Wrap(
-            direction: Axis.horizontal,
-            alignment: WrapAlignment.spaceBetween,
-            children: [
-              const _StatItem(
-                title: '30',
-                subtitle: 'Projects Done',
+          LayoutBuilder(
+            builder: (context, constraints) => SizedBox(
+              width: constraints.maxWidth,
+              child: Wrap(
+                direction: Axis.horizontal,
+                alignment: WrapAlignment.spaceBetween,
+                children: [
+                  const _StatItem(
+                    title: '30',
+                    subtitle: 'Projects Done',
+                  ),
+                  _StatItem(
+                    title: 'Contact',
+                    subtitle: 'ricardo@rhbrunetto.com',
+                    onTap: () {},
+                  ),
+                ],
               ),
-              _StatItem(
-                title: 'Contact',
-                subtitle: 'ricardo@rhbrunetto.com',
-                onTap: () {},
-              ),
-            ],
-          )
+            ),
+          ),
         ],
       );
 }
