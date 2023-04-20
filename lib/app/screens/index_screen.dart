@@ -50,6 +50,6 @@ class _Page {
 final _pages = [
   _Page('Home', const HomeRoute()),
   _Page('Projects', const ProjectsRoute()),
-  _Page('Services', const ServicesRoute()),
+  _Page('About', const AboutRoute()),
   _Page('Blog', const BlogRoute()),
 ];

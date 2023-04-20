@@ -4,12 +4,12 @@ import 'package:flutter/material.dart';
 import '../../../app/colors.dart';
 
 @RoutePage()
-class ServicesScreen extends StatelessWidget {
-  const ServicesScreen({Key? key}) : super(key: key);
+class AboutScreen extends StatelessWidget {
+  const AboutScreen({Key? key}) : super(key: key);
 
   @override
   Widget build(BuildContext context) => Container(
         color: RPColors.greyShadow,
-        child: const Center(child: Text('Services')),
+        child: const Center(child: Text('About')),
       );
 }

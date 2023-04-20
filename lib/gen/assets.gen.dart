@@ -30,10 +30,21 @@ class $AssetsIconsGen {
   List<SvgGenImage> get values => [android, dart, flutter, ios];
 }
 
+class $AssetsImagesGen {
+  const $AssetsImagesGen();
+
+  /// File path: assets/images/ricardo.png
+  AssetGenImage get ricardo => const AssetGenImage('assets/images/ricardo.png');
+
+  /// List of all assets
+  List<AssetGenImage> get values => [ricardo];
+}
+
 class Assets {
   Assets._();
 
   static const $AssetsIconsGen icons = $AssetsIconsGen();
+  static const $AssetsImagesGen images = $AssetsImagesGen();
 }
 
 class AssetGenImage {
