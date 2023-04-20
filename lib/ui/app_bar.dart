@@ -43,11 +43,33 @@ class RPAppBarButton extends StatelessWidget {
   final VoidCallback onTap;
 
   @override
-  Widget build(BuildContext context) => TextButton(
-        style: _menuButtonStyle,
-        onPressed: onTap,
-        child: Text(label),
-      );
+  Widget build(BuildContext context) {
+    const radius = Radius.circular(8);
+    const border = Border(
+      bottom: BorderSide(color: RPColors.orangeHighlight, width: 2),
+    );
+
+    return InkWell(
+      onTap: onTap,
+      customBorder: RoundedRectangleBorder(
+        borderRadius: isActive
+            ? const BorderRadius.only(topLeft: radius, topRight: radius)
+            : const BorderRadius.all(radius),
+      ),
+      child: Container(
+        padding: const EdgeInsets.all(8),
+        decoration: BoxDecoration(border: isActive ? border : null),
+        child: Text(
+          label,
+          style: const TextStyle(
+            fontSize: 15,
+            color: RPColors.dark,
+            fontWeight: FontWeight.bold,
+          ),
+        ),
+      ),
+    );
+  }
 }
 
 class _Menu extends StatelessWidget {
@@ -73,7 +95,9 @@ class _Logo extends StatelessWidget {
   @override
   Widget build(BuildContext context) => InkWell(
         hoverColor: Colors.transparent,
-        onTap: () => context.router.navigate(const HomeRoute()),
+        splashFactory: NoSplash.splashFactory,
+        borderRadius: const BorderRadius.all(Radius.circular(8)),
+        onTap: () => context.navigateTo(const HomeRoute()),
         child: const Text.rich(
           TextSpan(
             text: 'rhbrunetto',
@@ -115,12 +139,3 @@ class _Contact extends StatelessWidget {
         ),
       );
 }
-
-final _menuButtonStyle = TextButton.styleFrom(
-  foregroundColor: RPColors.dark,
-  textStyle: const TextStyle(
-    fontSize: 15,
-    color: RPColors.dark,
-    fontWeight: FontWeight.bold,
-  ),
-);

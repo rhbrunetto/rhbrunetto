@@ -1,6 +1,8 @@
+import 'package:auto_route/auto_route.dart';
 import 'package:flutter/material.dart';
 
 import '../../../app/colors.dart';
+import '../../../routes.gr.dart';
 
 class LeftSection extends StatelessWidget {
   const LeftSection({Key? key}) : super(key: key);
@@ -89,9 +91,12 @@ class _Buttons extends StatelessWidget {
             const SizedBox(height: 24),
             Row(
               children: [
-                TextButton(onPressed: () {}, child: const Text('Hire me')),
-                TextButton.icon(
+                TextButton(
                   onPressed: () {},
+                  child: const Text('Hire me'),
+                ),
+                TextButton.icon(
+                  onPressed: () => context.navigateTo(const ProjectsRoute()),
                   label: const Text('Projects'),
                   icon: const Icon(Icons.open_in_new_sharp),
                 ),
@@ -102,6 +107,7 @@ class _Buttons extends StatelessWidget {
       );
 }
 
+// TODO(rhbrunetto): refactor to a RenderObject to ensure chip is centered
 class _Name extends StatelessWidget {
   const _Name({Key? key}) : super(key: key);
 
@@ -153,6 +159,7 @@ class _StatItem extends StatelessWidget {
   @override
   Widget build(BuildContext context) => InkWell(
         onTap: onTap,
+        borderRadius: const BorderRadius.all(Radius.circular(8)),
         child: Column(
           mainAxisSize: MainAxisSize.min,
           crossAxisAlignment: CrossAxisAlignment.start,
