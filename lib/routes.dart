@@ -1,6 +1,5 @@
 import 'package:auto_route/auto_route.dart';
 
-import 'app/screens/routes.dart';
 import 'routes.gr.dart';
 
 @AutoRouterConfig(
@@ -13,6 +12,15 @@ class AppRouter extends $AppRouter {
 
   @override
   final List<AutoRoute> routes = [
-    indexRoutes,
+    AutoRoute(
+      page: IndexRoute.page,
+      path: '/',
+      children: [
+        AutoRoute(page: HomeRoute.page, path: 'home'),
+        AutoRoute(page: ProjectsRoute.page, path: 'projects'),
+        AutoRoute(page: ServicesRoute.page, path: 'services'),
+        AutoRoute(page: BlogRoute.page, path: 'blog'),
+      ],
+    ),
   ];
 }

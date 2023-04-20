@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 
+import '../gen/fonts.gen.dart';
 import '../routes.dart';
 
 class PortfolioApp extends StatefulWidget {
@@ -16,7 +17,7 @@ class _State extends State<PortfolioApp> {
   Widget build(BuildContext context) => MaterialApp.router(
         routerConfig: _router.config(),
         debugShowCheckedModeBanner: false,
-        theme: ThemeData(fontFamily: 'MavenPro'),
+        theme: ThemeData(fontFamily: FontFamily.mavenPro),
         title: 'Ricardo Brunetto',
       );
 }
