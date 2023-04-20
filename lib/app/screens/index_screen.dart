@@ -13,8 +13,6 @@ class IndexScreen extends StatefulWidget {
 }
 
 class _IndexScreenState extends State<IndexScreen> {
-  final _key = GlobalKey<AutoRouterState>();
-
   @override
   Widget build(BuildContext context) => const Scaffold(
         appBar: RPAppBar(),
