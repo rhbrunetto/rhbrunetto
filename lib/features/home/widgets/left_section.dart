@@ -93,12 +93,24 @@ class _Buttons extends StatelessWidget {
               children: [
                 TextButton(
                   onPressed: () {},
-                  child: const Text('Hire me'),
+                  style: TextButton.styleFrom(
+                    elevation: 0,
+                    backgroundColor: RPColors.orangeHighlight,
+                    foregroundColor: Colors.white,
+                    fixedSize: const Size(100, 50),
+                  ),
+                  child: const Text('Hire Me'),
                 ),
+                const SizedBox(width: 16),
                 TextButton.icon(
+                  style: TextButton.styleFrom(
+                    iconColor: RPColors.dark,
+                    foregroundColor: RPColors.dark,
+                    fixedSize: const Size(100, 50),
+                  ),
+                  icon: const Icon(Icons.open_in_new_sharp, size: 16),
                   onPressed: () => context.navigateTo(const ProjectsRoute()),
                   label: const Text('Projects'),
-                  icon: const Icon(Icons.open_in_new_sharp),
                 ),
               ],
             )
