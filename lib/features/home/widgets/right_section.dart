@@ -30,6 +30,7 @@ class _Content extends StatelessWidget {
           children: const [
             _Image(),
             IconsPanel(),
+            _Warning(),
           ],
         ),
       );
@@ -63,5 +64,25 @@ class _Header extends StatelessWidget {
           ],
         ),
         style: TextStyle(fontSize: 24, height: 1.3),
+      );
+}
+
+class _Warning extends StatelessWidget {
+  const _Warning({Key? key}) : super(key: key);
+
+  @override
+  Widget build(BuildContext context) => const Positioned(
+        bottom: 24,
+        left: 0,
+        right: 0,
+        child: Chip(
+          backgroundColor: RPColors.dark,
+          padding: EdgeInsets.all(8),
+          avatar: Icon(Icons.warning_rounded, color: RPColors.orangeHighlight),
+          label: Text(
+            'This website is under construction',
+            style: TextStyle(color: Colors.white, fontSize: 18),
+          ),
+        ),
       );
 }

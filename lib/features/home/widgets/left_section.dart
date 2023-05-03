@@ -21,17 +21,55 @@ class LeftSection extends StatelessWidget {
             ],
           ),
         ),
-        bottomNavigationBar: const _Bottom(),
+        bottomNavigationBar: const _Footer(),
       );
 }
 
-class _Bottom extends StatelessWidget {
-  const _Bottom({Key? key}) : super(key: key);
+class _Footer extends StatelessWidget {
+  const _Footer({Key? key}) : super(key: key);
 
   @override
-  Widget build(BuildContext context) => Container(
-        height: 300,
-        color: RPColors.dark,
+  Widget build(BuildContext context) => FractionallySizedBox(
+        heightFactor: .3,
+        child: Container(
+          color: RPColors.dark,
+          child: Center(
+            child: Row(
+              mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+              children: [
+                Column(
+                  children: [
+                    const Text(
+                      'From dApps to your company internal solution',
+                      style: TextStyle(
+                        color: Colors.white,
+                        fontWeight: FontWeight.bold,
+                        fontSize: 18,
+                      ),
+                    ),
+                    TextButton(
+                      onPressed: () => context.navigateTo(const AboutRoute()),
+                      style: TextButton.styleFrom(
+                        elevation: 0,
+                        backgroundColor: RPColors.yellowHighlight,
+                        foregroundColor: RPColors.dark,
+                        fixedSize: const Size(100, 50),
+                      ),
+                      child: const Text('Know More'),
+                    ),
+                  ],
+                ),
+                Column(
+                  children: const [
+                    _FooterItem(
+                      label: 'International experience',
+                    )
+                  ],
+                ),
+              ],
+            ),
+          ),
+        ),
       );
 }
 
@@ -182,6 +220,22 @@ class _StatItem extends StatelessWidget {
             ),
             Text(subtitle, style: const TextStyle(fontSize: 16)),
           ],
+        ),
+      );
+}
+
+class _FooterItem extends StatelessWidget {
+  const _FooterItem({Key? key, required this.label}) : super(key: key);
+
+  final String label;
+
+  @override
+  Widget build(BuildContext context) => Text(
+        '\u00B7 $label',
+        style: const TextStyle(
+          color: Colors.white,
+          fontWeight: FontWeight.w500,
+          fontSize: 14,
         ),
       );
 }
