@@ -4,7 +4,8 @@ import 'package:flutter/material.dart';
 import '../../../../core/layout_wrapper.dart';
 import '../../../../gen/assets.gen.dart';
 import '../../../../l10n/l10n.dart';
-import '../../../../ui/curve_drawer.dart';
+import '../../../../ui/background_drawer.dart';
+import '../../../../ui/paints/bubble.dart';
 import '../section.dart';
 
 @RoutePage()
@@ -16,10 +17,14 @@ class FirstSectionScreen extends StatelessWidget {
     final keys = List.generate(3, (_) => GlobalKey());
 
     return LayoutWrapper(
-      builder: (context, mode) => CurveDrawer(
+      builder: (context, mode) => BackgroundDrawer(
         indexKeys: keys,
-        enabled: mode == LayoutMode.web,
+        includeArrows: mode == LayoutMode.web,
+        customBackgrounds: {
+          keys.elementAt(0): bubble,
+        },
         child: ListView(
+          physics: const NeverScrollableScrollPhysics(),
           shrinkWrap: true,
           children: [
             HomeSection(

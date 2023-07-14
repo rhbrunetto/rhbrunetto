@@ -4,7 +4,7 @@ import 'package:flutter/material.dart';
 import '../../../../core/layout_wrapper.dart';
 import '../../../../gen/assets.gen.dart';
 import '../../../../l10n/l10n.dart';
-import '../../../../ui/curve_drawer.dart';
+import '../../../../ui/background_drawer.dart';
 import '../section.dart';
 
 @RoutePage()
@@ -16,11 +16,12 @@ class ThirdSectionScreen extends StatelessWidget {
     final keys = List.generate(3, (_) => GlobalKey());
 
     return LayoutWrapper(
-      builder: (context, mode) => CurveDrawer(
+      builder: (context, mode) => BackgroundDrawer(
         indexKeys: keys,
-        enabled: mode == LayoutMode.web,
+        includeArrows: mode == LayoutMode.web,
         child: ListView(
           shrinkWrap: true,
+          physics: const NeverScrollableScrollPhysics(),
           children: [
             HomeSection(
               textKey: keys.elementAt(0),

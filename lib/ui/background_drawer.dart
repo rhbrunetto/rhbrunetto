@@ -5,23 +5,32 @@ import 'package:flutter/material.dart';
 
 import 'colors.dart';
 
-class CurveDrawer extends StatefulWidget {
-  const CurveDrawer({
+typedef CustomBackgroundPainter = void Function(
+  Canvas canvas,
+  Size size,
+  Offset keyOffset,
+  Size keySize,
+);
+
+class BackgroundDrawer extends StatefulWidget {
+  const BackgroundDrawer({
     super.key,
-    required this.enabled,
+    required this.includeArrows,
     required this.indexKeys,
+    this.customBackgrounds = const {},
     required this.child,
   });
 
-  final bool enabled;
+  final bool includeArrows;
   final List<GlobalKey> indexKeys;
+  final Map<GlobalKey, CustomBackgroundPainter> customBackgrounds;
   final Widget child;
 
   @override
-  State<CurveDrawer> createState() => _CurveDrawerState();
+  State<BackgroundDrawer> createState() => _BackgroundDrawerState();
 }
 
-class _CurveDrawerState extends State<CurveDrawer>
+class _BackgroundDrawerState extends State<BackgroundDrawer>
     with SingleTickerProviderStateMixin {
   late final AnimationController _controller;
   final _canvasKey = GlobalKey();
@@ -37,44 +46,79 @@ class _CurveDrawerState extends State<CurveDrawer>
   }
 
   Future<void> _animate() async {
-    if (!widget.enabled) return;
+    if (!widget.includeArrows) return;
     await Future.delayed(_cooldown);
     if (!mounted) return;
     _controller.forward();
   }
 
   @override
-  void didUpdateWidget(covariant CurveDrawer oldWidget) {
+  void didUpdateWidget(covariant BackgroundDrawer oldWidget) {
     super.didUpdateWidget(oldWidget);
-    if (oldWidget.enabled != widget.enabled && widget.enabled) {
+    if (oldWidget.includeArrows != widget.includeArrows &&
+        widget.includeArrows) {
       _animate();
     }
   }
 
   @override
-  Widget build(BuildContext context) {
-    if (!widget.enabled) {
-      return widget.child;
-    }
+  Widget build(BuildContext context) => RepaintBoundary(
+        child: CustomPaint(
+          painter: _BackgroundPainter(
+            customBackgrounds: widget.customBackgrounds,
+          ),
+          child: Builder(
+            builder: (context) {
+              if (!widget.includeArrows) {
+                return widget.child;
+              }
 
-    return AnimatedBuilder(
-      animation: _controller,
-      builder: (context, child) => CustomPaint(
-        key: _canvasKey,
-        painter: _ArrowPainter(
-          widget.indexKeys,
-          _canvasKey,
-          _controller.value,
+              return AnimatedBuilder(
+                animation: _controller,
+                builder: (context, child) => CustomPaint(
+                  key: _canvasKey,
+                  painter: _ArrowPainter(
+                    keys: widget.indexKeys,
+                    painterKey: _canvasKey,
+                    animationValue: _controller.value,
+                  ),
+                  child: child,
+                ),
+                child: widget.child,
+              );
+            },
+          ),
         ),
-        child: child,
-      ),
-      child: widget.child,
-    );
+      );
+}
+
+class _BackgroundPainter extends CustomPainter {
+  _BackgroundPainter({
+    required this.customBackgrounds,
+  });
+
+  final Map<GlobalKey, CustomBackgroundPainter> customBackgrounds;
+
+  @override
+  void paint(Canvas canvas, Size size) {
+    for (final entry in customBackgrounds.entries) {
+      final info = entry.key.getWidgetInfo();
+      if (info == null) return;
+
+      entry.value(canvas, size, info.offset, info.size);
+    }
   }
+
+  @override
+  bool shouldRepaint(covariant CustomPainter oldDelegate) => false;
 }
 
 class _ArrowPainter extends CustomPainter {
-  _ArrowPainter(this.keys, this.painterKey, this.animationValue);
+  _ArrowPainter({
+    required this.keys,
+    required this.painterKey,
+    required this.animationValue,
+  });
 
   final List<GlobalKey> keys;
   final GlobalKey painterKey;
