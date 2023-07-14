@@ -1,0 +1,19 @@
+{
+  "title": "Deine Job\nwebsite",
+  "registerButton": "Kostenlos Registrieren",
+  "firstTab": "Arbeitnehmer",
+  "secondTab": "Arbeitgeber",
+  "thirdTab": "Temporärbüro",
+  "firstSectionHeader": "Drei einfache Schritte\nzu deinem neuen Job",
+  "firstSectionFirstItem":"Erstellen dein Lebenslauf",
+  "firstSectionSecondItem": "Erstellen dein Lebenslauf",
+  "firstSectionThirdItem": "Mit nur einem Klick\nbewerben",
+  "secondSectionHeader": "Drei einfache Schritte\nzu deinem neuen Mitarbeiter",
+  "secondSectionFirstItem":"Erstellen dein\nUnternehmensprofil",
+  "secondSectionSecondItem": "Erstellen ein Jobinserat",
+  "secondSectionThirdItem": "Wähle deinen\nneuen Mitarbeiter aus",
+  "thirdSectionHeader": "Drei einfache Schritte\nzur Vermittlung neuer Mitarbeiter",
+  "thirdSectionFirstItem":"Erstellen dein\nUnternehmensprofil",
+  "thirdSectionSecondItem": "Erhalte Vermittlungs-\nangebot von Arbeitgeber",
+  "thirdSectionThirdItem": "Vermittlung nach\nProvision oder\nStundenlohn"
+ }
