@@ -1,8 +1,8 @@
 import 'package:auto_route/auto_route.dart';
 import 'package:flutter/material.dart';
 
+import '../../core/layout_wrapper.dart';
 import '../../l10n/l10n.dart';
-import '../../ui/app_bar.dart';
 import 'widgets/bottom_bar.dart';
 import 'widgets/header.dart';
 import 'widgets/sections/first.dart';
@@ -23,13 +23,15 @@ class _HomeScreenState extends State<HomeScreen> {
   int _activeIndex = 0;
 
   @override
-  Widget build(BuildContext context) => Scaffold(
-        appBar: JobSiteAppBar(),
-        body: CustomScrollView(
-          slivers: [
-            SliverList.list(
+  Widget build(BuildContext context) => LayoutWrapper(
+        builder: (context, mode) => Scaffold(
+          body: NestedScrollView(
+            headerSliverBuilder: (context, _) => [
+              if (mode == LayoutMode.web) const WebHeader(),
+            ],
+            body: ListView(
               children: [
-                const HomeHeader(),
+                if (mode == LayoutMode.mobile) const MobileHeader(),
                 HomeTabs(
                   tabs: _tabs.map((it) => it.name(context)).toList(),
                   headers: _tabs.map((it) => it.header(context)).toList(),
@@ -40,9 +42,9 @@ class _HomeScreenState extends State<HomeScreen> {
                 const SizedBox(height: 32.0),
               ],
             ),
-          ],
+          ),
+          bottomNavigationBar: const HomeBottomBar(),
         ),
-        bottomNavigationBar: const HomeBottomBar(),
       );
 }
 

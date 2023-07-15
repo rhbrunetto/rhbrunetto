@@ -1,32 +1,18 @@
 import 'package:flutter/material.dart';
+import 'package:dfunc/dfunc.dart';
 
-import '../../../core/layout_wrapper.dart';
 import '../../../gen/assets.gen.dart';
 import '../../../l10n/l10n.dart';
+import '../../../ui/app_bar.dart';
 import '../../../ui/colors.dart';
 import 'register_button.dart';
 
-class HomeHeader extends StatelessWidget {
-  const HomeHeader({super.key});
-
-  @override
-  Widget build(BuildContext context) => LayoutWrapper(
-        builder: (context, mode) {
-          if (mode == LayoutMode.web) {
-            return const _WebHeader();
-          } else {
-            return const _MobileHeader();
-          }
-        },
-      );
-}
-
-class _MobileHeader extends StatelessWidget {
-  const _MobileHeader();
+class MobileHeader extends StatelessWidget {
+  const MobileHeader({super.key});
 
   @override
   Widget build(BuildContext context) => CustomPaint(
-        painter: _HeaderBackgroundPainter(),
+        painter: _HeaderBackgroundPainter(1.0),
         child: Column(
           children: [
             const SizedBox(height: 16),
@@ -53,22 +39,93 @@ class _MobileHeader extends StatelessWidget {
       );
 }
 
-class _WebHeader extends StatelessWidget {
-  const _WebHeader();
+class WebHeader extends StatelessWidget {
+  const WebHeader({super.key});
 
   @override
-  Widget build(BuildContext context) => CustomPaint(
-        painter: _HeaderBackgroundPainter(),
+  Widget build(BuildContext context) => SliverPersistentHeader(
+        pinned: true,
+        delegate: _Delegate(
+          title: context.l10n.title,
+        ),
+      );
+}
+
+class _Delegate extends SliverPersistentHeaderDelegate {
+  const _Delegate({
+    required this.title,
+  });
+
+  final String title;
+
+  @override
+  Widget build(
+    BuildContext context,
+    double shrinkOffset,
+    bool overlapsContent,
+  ) {
+    final maxWidth = MediaQuery.of(context).size.width;
+    final ratio = (shrinkOffset / maxExtent);
+    final accRatio =
+        ratio.let(Curves.easeOutQuart.transform).let((it) => 1 - it);
+    final easeRatio = ratio.let(Curves.ease.transform).let((it) => 1 - it);
+
+    return Material(
+      color: Colors.white,
+      child: CustomPaint(
+        painter: _HeaderBackgroundPainter(easeRatio),
+        child: Stack(
+          clipBehavior: Clip.none,
+          children: [
+            _buildHeader(easeRatio),
+            Positioned(
+              top: 0,
+              left: 0,
+              right: 0,
+              child: JobSiteAppBar(),
+            ),
+            _buildButton(easeRatio, easeRatio, maxWidth),
+          ],
+        ),
+      ),
+    );
+  }
+
+  // TODO(rhbrunetto): add "magnetic" behavior
+  Widget _buildButton(double easeRatio, double accRatio, double width) {
+    final left = width / 2 - 300;
+    const bottom = kToolbarHeight + _buttonBottomPadding;
+
+    return Positioned(
+      bottom: bottom - ((bottom + 2) * (1 - accRatio)),
+      left: left - ((1 - easeRatio) * (left - 24)),
+      child: Container(
+        height: kToolbarHeight,
+        padding: const EdgeInsets.symmetric(vertical: 10),
+        child: const RegisterButton(),
+      ),
+    );
+  }
+
+  Widget _buildHeader(double ratio) {
+    final top = kToolbarHeight - (maxExtent * (1 - ratio));
+
+    return Positioned.fill(
+      top: top,
+      child: Opacity(
+        opacity: ratio,
         child: Container(
-          padding: const EdgeInsets.all(32),
+          padding: const EdgeInsets.all(16),
           child: Row(
             mainAxisAlignment: MainAxisAlignment.center,
             children: [
               Column(
+                mainAxisAlignment: MainAxisAlignment.center,
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
+                  const SizedBox(height: 48),
                   Text(
-                    context.l10n.title,
+                    title,
                     style: const TextStyle(
                       color: JobSiteColors.greyishBlueDark,
                       fontSize: 42,
@@ -76,15 +133,15 @@ class _WebHeader extends StatelessWidget {
                     ),
                   ),
                   const SizedBox(height: 24),
-                  const RegisterButton(),
-                  const SizedBox(height: 36),
+                  const SizedBox(height: _buttonSize, width: _imageSize),
+                  const SizedBox(height: _buttonBottomPadding),
                 ],
               ),
               const SizedBox(width: 50),
               Flexible(
                 child: ClipOval(
                   child: Container(
-                    width: 300,
+                    width: _imageSize,
                     color: JobSiteColors.white,
                     child: AspectRatio(
                       aspectRatio: 1,
@@ -97,13 +154,27 @@ class _WebHeader extends StatelessWidget {
             ],
           ),
         ),
-      );
+      ),
+    );
+  }
+
+  @override
+  double get maxExtent => 400;
+
+  @override
+  double get minExtent => kToolbarHeight;
+
+  @override
+  bool shouldRebuild(covariant SliverPersistentHeaderDelegate _) => false;
 }
 
 class _HeaderBackgroundPainter extends CustomPainter {
+  _HeaderBackgroundPainter(this.opacity);
+
+  final double opacity;
+
   @override
   void paint(Canvas canvas, Size size) {
-    canvas.drawPaint(Paint()..color = Colors.white);
     final width = size.width;
     final height = size.height;
 
@@ -114,10 +185,10 @@ class _HeaderBackgroundPainter extends CustomPainter {
       ..lineTo(width, 0);
 
     final bezierPaint = Paint()
-      ..shader = const LinearGradient(
+      ..shader = LinearGradient(
         colors: [
-          JobSiteColors.greyishBlueLightest,
-          JobSiteColors.turquoiseLightest,
+          JobSiteColors.greyishBlueLightest.withOpacity(opacity),
+          JobSiteColors.turquoiseLightest.withOpacity(opacity),
         ],
       ).createShader(Offset.zero & size);
 
@@ -127,3 +198,7 @@ class _HeaderBackgroundPainter extends CustomPainter {
   @override
   bool shouldRepaint(covariant CustomPainter oldDelegate) => false;
 }
+
+const _imageSize = 275.0;
+const _buttonSize = 80.0;
+const _buttonBottomPadding = 36.0;
