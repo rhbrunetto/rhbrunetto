@@ -1,48 +1,33 @@
 import 'package:flutter/material.dart';
 
 import '../../colors.dart';
+import '../background_painter.dart';
+import '../common.dart';
 
+class BubbleBackground implements Background {
+  const BubbleBackground({
+    required this.radius,
+    this.offset = FractionalOffset.center,
+  });
 
-void bubble(
-  Canvas canvas,
-  Size size,
-  Offset canvasOffset,
-  Offset keyOffset,
-  Size keySize,
-) {
-  final width = size.width;
+  final double radius;
+  final FractionalOffset offset;
 
-  // final top = (keyOffset & keySize).topCenter - _deltaOffset;
-  // final bottom = (keyOffset & keySize).bottomCenter + _deltaOffset;
-
-  final top = keyOffset - canvasOffset;
-  final bottom = keyOffset = canvasOffset;
-
-  print(top);
-  print(bottom);
-
-  Path bezierPath = Path()
-    ..moveTo(0, top.dy)
-    ..lineTo(width, top.dy)
-    ..moveTo(width, bottom.dy)
-    ..lineTo(0, bottom.dy)
-    ..close();
-
-  final bezierPaint = Paint()
-    ..shader = const LinearGradient(
-      colors: [
-        JobSiteColors.greyishBlueLightest,
-        JobSiteColors.turquoiseLightest,
-      ],
-    ).createShader(Offset.zero & size);
-
-  // canvas.drawRect(keyOffset & keySize , _paint);
-
-  canvas.drawPath(bezierPath, _paint);
+  @override
+  void paint(
+    Canvas canvas,
+    Size size,
+    WidgetInfo canvasInfo,
+    WidgetInfo keyInfo,
+    double value,
+  ) {
+    canvas.drawCircle(
+      offset.alongSize(keyInfo.size) + keyInfo.offset - canvasInfo.offset,
+      // keyInfo.size.bottomCenter(keyInfo.offset) - canvasInfo.offset,
+      radius * value,
+      _paint,
+    );
+  }
 }
 
-const _totalHeight = 200.0;
-const _deltaOffset = Offset(0, _totalHeight / 2);
-final _paint = Paint()
-  ..color = Colors.red
-  ..strokeWidth = 10;
+final _paint = Paint()..color = JobSiteColors.greyLight;

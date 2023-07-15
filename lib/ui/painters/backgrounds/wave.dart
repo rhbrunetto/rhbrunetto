@@ -14,6 +14,7 @@ class WaveBackground implements Background {
     Size size,
     WidgetInfo canvasInfo,
     WidgetInfo keyInfo,
+    double value,
   ) {
     final width = size.width;
     final top = Offset(0, keyInfo.offset.dy - _totalHeight / 2)
@@ -38,10 +39,10 @@ class WaveBackground implements Background {
       ..close();
 
     final bezierPaint = Paint()
-      ..shader = const LinearGradient(
+      ..shader = LinearGradient(
         colors: [
-          JobSiteColors.turquoiseLightest,
-          JobSiteColors.greyishBlueLightest,
+          JobSiteColors.turquoiseLightest.withOpacity(value),
+          JobSiteColors.greyishBlueLightest.withOpacity(value),
         ],
       ).createShader(Offset.zero & size);
 

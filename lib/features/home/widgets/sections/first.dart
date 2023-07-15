@@ -5,6 +5,7 @@ import '../../../../core/layout_wrapper.dart';
 import '../../../../gen/assets.gen.dart';
 import '../../../../l10n/l10n.dart';
 import '../../../../ui/painters/background_painter.dart';
+import '../../../../ui/painters/backgrounds/bubble.dart';
 import '../../../../ui/painters/backgrounds/wave.dart';
 import '../../../../ui/painters/curves_painter.dart';
 import '../section.dart';
@@ -20,7 +21,12 @@ class FirstSectionScreen extends StatelessWidget {
     return LayoutWrapper(
       builder: (context, mode) => BackgroundPainter(
         backgroundMapper: {
+          keys.elementAt(0): const BubbleBackground(radius: 60),
           keys.elementAt(1): const WaveBackground(),
+          keys.elementAt(2): const BubbleBackground(
+            radius: 80,
+            offset: FractionalOffset.bottomCenter,
+          ),
         },
         child: CurvesPainter(
           indexKeys: keys,
