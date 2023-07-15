@@ -22,7 +22,7 @@ class HomeTabs extends StatelessWidget {
   Widget build(BuildContext context) => DefaultTabController(
         length: tabs.length,
         child: Padding(
-          padding:const EdgeInsets.symmetric(vertical: 24.0),
+          padding: const EdgeInsets.symmetric(vertical: 24.0),
           child: Column(
             children: [
               _Tabs(
@@ -68,7 +68,9 @@ class _Tabs extends StatelessWidget {
                     horizontal: 16.0,
                     vertical: 8.0,
                   ),
-                  child: Text(title),
+                  child: FittedBox(
+                    child: Text(title, maxLines: 1),
+                  ),
                 ),
               ),
             )

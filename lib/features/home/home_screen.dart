@@ -3,6 +3,7 @@ import 'package:flutter/material.dart';
 
 import '../../core/layout_wrapper.dart';
 import '../../l10n/l10n.dart';
+import '../../ui/app_bar.dart';
 import 'widgets/bottom_bar.dart';
 import 'widgets/header.dart';
 import 'widgets/sections/first.dart';
@@ -25,6 +26,7 @@ class _HomeScreenState extends State<HomeScreen> {
   @override
   Widget build(BuildContext context) => LayoutWrapper(
         builder: (context, mode) => Scaffold(
+          appBar: mode == LayoutMode.mobile ? JobSiteAppBar() : null,
           body: NestedScrollView(
             headerSliverBuilder: (context, _) => [
               if (mode == LayoutMode.web) const WebHeader(),
