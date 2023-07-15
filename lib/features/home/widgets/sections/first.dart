@@ -40,13 +40,14 @@ class FirstSectionScreen extends StatelessWidget {
                 text: context.l10n.firstSectionFirstItem,
                 number: '1.',
                 image: Assets.images.undrawProfileDataReV81r.svg(),
+                mobileAlignment: MobileSectionAlignment.top,
               ),
               HomeSection(
                 textKey: keys.elementAt(1),
                 text: context.l10n.firstSectionSecondItem,
                 number: '2.',
                 image: Assets.images.undrawTask31wc.svg(),
-                imageAlignment: HomeSectionImageAlignment.left,
+                webAlignment: WebSectionAlignment.left,
               ),
               HomeSection(
                 textKey: keys.elementAt(2),

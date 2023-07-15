@@ -34,13 +34,14 @@ class ThirdSectionScreen extends StatelessWidget {
                 text: context.l10n.thirdSectionFirstItem,
                 number: '1.',
                 image: Assets.images.undrawProfileDataReV81r.svg(),
+                mobileAlignment: MobileSectionAlignment.top,
               ),
               HomeSection(
                 textKey: keys.elementAt(1),
                 text: context.l10n.thirdSectionSecondItem,
                 number: '2.',
                 image: Assets.images.undrawJobOffersKw5d.svg(),
-                imageAlignment: HomeSectionImageAlignment.left,
+                webAlignment: WebSectionAlignment.left,
               ),
               HomeSection(
                 textKey: keys.elementAt(2),

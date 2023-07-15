@@ -3,7 +3,9 @@ import 'package:flutter/material.dart';
 import '../../../core/layout_wrapper.dart';
 import '../../../ui/colors.dart';
 
-enum HomeSectionImageAlignment { left, right }
+enum WebSectionAlignment { left, right }
+
+enum MobileSectionAlignment { top, bottom }
 
 class HomeSection extends StatelessWidget {
   const HomeSection({
@@ -12,14 +14,16 @@ class HomeSection extends StatelessWidget {
     required this.text,
     required this.number,
     required this.image,
-    this.imageAlignment = HomeSectionImageAlignment.right,
+    this.webAlignment = WebSectionAlignment.right,
+    this.mobileAlignment = MobileSectionAlignment.bottom,
   });
 
   final GlobalKey textKey;
   final String text;
   final String number;
   final Widget image;
-  final HomeSectionImageAlignment imageAlignment;
+  final WebSectionAlignment webAlignment;
+  final MobileSectionAlignment mobileAlignment;
 
   @override
   Widget build(BuildContext context) => LayoutWrapper(
@@ -30,7 +34,7 @@ class HomeSection extends StatelessWidget {
               text: text,
               number: number,
               image: image,
-              imageAlignment: imageAlignment,
+              alignment: webAlignment,
             );
           } else {
             return _MobileSection(
@@ -38,7 +42,7 @@ class HomeSection extends StatelessWidget {
               text: text,
               number: number,
               image: image,
-              imageAlignment: imageAlignment,
+              imageAlignment: mobileAlignment,
             );
           }
         },
@@ -51,14 +55,14 @@ class _WebSection extends StatelessWidget {
     required this.text,
     required this.number,
     required this.image,
-    required this.imageAlignment,
+    required this.alignment,
   });
 
   final GlobalKey textKey;
   final String text;
   final String number;
   final Widget image;
-  final HomeSectionImageAlignment imageAlignment;
+  final WebSectionAlignment alignment;
 
   @override
   Widget build(BuildContext context) {
@@ -77,7 +81,7 @@ class _WebSection extends StatelessWidget {
           mainAxisAlignment: MainAxisAlignment.center,
           crossAxisAlignment: CrossAxisAlignment.end,
           children: [
-            if (imageAlignment == HomeSectionImageAlignment.left) image,
+            if (alignment == WebSectionAlignment.left) image,
             Text(
               key: textKey,
               number,
@@ -97,7 +101,7 @@ class _WebSection extends StatelessWidget {
                 ),
               ),
             ),
-            if (imageAlignment == HomeSectionImageAlignment.right) image,
+            if (alignment == WebSectionAlignment.right) image,
           ],
         ),
       ),
@@ -118,7 +122,7 @@ class _MobileSection extends StatelessWidget {
   final String text;
   final String number;
   final Widget image;
-  final HomeSectionImageAlignment imageAlignment;
+  final MobileSectionAlignment imageAlignment;
 
   @override
   Widget build(BuildContext context) {
@@ -138,14 +142,14 @@ class _MobileSection extends StatelessWidget {
           children: [
             Positioned.fill(
               bottom:
-                  imageAlignment == HomeSectionImageAlignment.left ? 0 : null,
-              top: imageAlignment == HomeSectionImageAlignment.left ? null : 0,
+                  imageAlignment == MobileSectionAlignment.bottom ? 0 : null,
+              top: imageAlignment == MobileSectionAlignment.top ? 0 : null,
               child: image,
             ),
             Positioned(
               bottom:
-                  imageAlignment == HomeSectionImageAlignment.left ? null : 0,
-              top: imageAlignment == HomeSectionImageAlignment.left ? 0 : null,
+                  imageAlignment == MobileSectionAlignment.bottom ? null : 0,
+              top: imageAlignment == MobileSectionAlignment.top ? null : 0,
               child: Row(
                 mainAxisAlignment: MainAxisAlignment.center,
                 crossAxisAlignment: CrossAxisAlignment.center,

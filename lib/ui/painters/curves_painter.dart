@@ -162,7 +162,7 @@ final _paint = Paint()
   ..color = JobSiteColors.greyishBlue
   ..strokeWidth = 1;
 
-const _cooldown = Duration(seconds: 1);
-const _animationDuration = Duration(seconds: 2);
+const _cooldown = Duration(milliseconds: 500);
+const _animationDuration = Duration(seconds: 1);
 const _arrowSize = 10;
 const _arrowAngle = 25 * pi / 180;
