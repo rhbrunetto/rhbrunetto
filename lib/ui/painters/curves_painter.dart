@@ -3,34 +3,26 @@ import 'dart:ui';
 
 import 'package:flutter/material.dart';
 
-import 'colors.dart';
+import '../colors.dart';
+import 'common.dart';
 
-typedef CustomBackgroundPainter = void Function(
-  Canvas canvas,
-  Size size,
-  Offset keyOffset,
-  Size keySize,
-);
-
-class BackgroundDrawer extends StatefulWidget {
-  const BackgroundDrawer({
+class CurvesPainter extends StatefulWidget {
+  const CurvesPainter({
     super.key,
-    required this.includeArrows,
+    required this.enabled,
     required this.indexKeys,
-    this.customBackgrounds = const {},
     required this.child,
   });
 
-  final bool includeArrows;
+  final bool enabled;
   final List<GlobalKey> indexKeys;
-  final Map<GlobalKey, CustomBackgroundPainter> customBackgrounds;
   final Widget child;
 
   @override
-  State<BackgroundDrawer> createState() => _BackgroundDrawerState();
+  State<CurvesPainter> createState() => _CurvesPainterState();
 }
 
-class _BackgroundDrawerState extends State<BackgroundDrawer>
+class _CurvesPainterState extends State<CurvesPainter>
     with SingleTickerProviderStateMixin {
   late final AnimationController _controller;
   final _canvasKey = GlobalKey();
@@ -46,71 +38,44 @@ class _BackgroundDrawerState extends State<BackgroundDrawer>
   }
 
   Future<void> _animate() async {
-    if (!widget.includeArrows) return;
+    if (!widget.enabled) return;
     await Future.delayed(_cooldown);
     if (!mounted) return;
     _controller.forward();
   }
 
   @override
-  void didUpdateWidget(covariant BackgroundDrawer oldWidget) {
+  void didUpdateWidget(covariant CurvesPainter oldWidget) {
     super.didUpdateWidget(oldWidget);
-    if (oldWidget.includeArrows != widget.includeArrows &&
-        widget.includeArrows) {
+    if (oldWidget.enabled != widget.enabled && widget.enabled) {
       _animate();
     }
   }
 
   @override
   Widget build(BuildContext context) => RepaintBoundary(
-        child: CustomPaint(
-          painter: _BackgroundPainter(
-            customBackgrounds: widget.customBackgrounds,
-          ),
-          child: Builder(
-            builder: (context) {
-              if (!widget.includeArrows) {
-                return widget.child;
-              }
+        child: Builder(
+          builder: (context) {
+            if (!widget.enabled) {
+              return widget.child;
+            }
 
-              return AnimatedBuilder(
-                animation: _controller,
-                builder: (context, child) => CustomPaint(
-                  key: _canvasKey,
-                  painter: _ArrowPainter(
-                    keys: widget.indexKeys,
-                    painterKey: _canvasKey,
-                    animationValue: _controller.value,
-                  ),
-                  child: child,
+            return AnimatedBuilder(
+              animation: _controller,
+              builder: (context, child) => CustomPaint(
+                key: _canvasKey,
+                painter: _ArrowPainter(
+                  keys: widget.indexKeys,
+                  painterKey: _canvasKey,
+                  animationValue: _controller.value,
                 ),
-                child: widget.child,
-              );
-            },
-          ),
+                child: child,
+              ),
+              child: widget.child,
+            );
+          },
         ),
       );
-}
-
-class _BackgroundPainter extends CustomPainter {
-  _BackgroundPainter({
-    required this.customBackgrounds,
-  });
-
-  final Map<GlobalKey, CustomBackgroundPainter> customBackgrounds;
-
-  @override
-  void paint(Canvas canvas, Size size) {
-    for (final entry in customBackgrounds.entries) {
-      final info = entry.key.getWidgetInfo();
-      if (info == null) return;
-
-      entry.value(canvas, size, info.offset, info.size);
-    }
-  }
-
-  @override
-  bool shouldRepaint(covariant CustomPainter oldDelegate) => false;
 }
 
 class _ArrowPainter extends CustomPainter {
@@ -197,18 +162,7 @@ final _paint = Paint()
   ..color = JobSiteColors.greyishBlue
   ..strokeWidth = 1;
 
-const _cooldown = Duration(seconds: 2);
+const _cooldown = Duration(seconds: 1);
 const _animationDuration = Duration(seconds: 2);
 const _arrowSize = 10;
 const _arrowAngle = 25 * pi / 180;
-
-typedef WidgetInfo = ({Size size, Offset offset});
-
-extension on GlobalKey {
-  WidgetInfo? getWidgetInfo() {
-    final renderBox = currentContext?.findRenderObject();
-    if (renderBox is! RenderBox) return null;
-
-    return (size: renderBox.size, offset: renderBox.localToGlobal(Offset.zero));
-  }
-}

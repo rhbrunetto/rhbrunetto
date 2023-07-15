@@ -36,10 +36,7 @@ class _HomeScreenState extends State<HomeScreen> {
                   active: _activeIndex,
                   onSelect: (it) => setState(() => _activeIndex = it),
                 ),
-                Padding(
-                  padding: const EdgeInsets.symmetric(horizontal: 8.0),
-                  child: _tabs.elementAt(_activeIndex).route,
-                ),
+                _tabs.elementAt(_activeIndex).route,
                 const SizedBox(height: 32.0),
               ],
             ),

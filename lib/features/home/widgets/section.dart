@@ -75,7 +75,7 @@ class _WebSection extends StatelessWidget {
         height: 200,
         child: Row(
           mainAxisAlignment: MainAxisAlignment.center,
-          crossAxisAlignment: CrossAxisAlignment.center,
+          crossAxisAlignment: CrossAxisAlignment.end,
           children: [
             if (imageAlignment == HomeSectionImageAlignment.left) image,
             Text(
@@ -87,11 +87,14 @@ class _WebSection extends StatelessWidget {
               ),
             ),
             const SizedBox(width: 16),
-            Text(
-              text,
-              style: const TextStyle(
-                fontSize: 24,
-                color: JobSiteColors.greyishBlue,
+            Padding(
+              padding: const EdgeInsets.symmetric(vertical: 16.0),
+              child: Text(
+                text,
+                style: const TextStyle(
+                  fontSize: 24,
+                  color: JobSiteColors.greyishBlue,
+                ),
               ),
             ),
             if (imageAlignment == HomeSectionImageAlignment.right) image,
