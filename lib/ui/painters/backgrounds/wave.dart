@@ -6,7 +6,11 @@ import '../background_painter.dart';
 import '../common.dart';
 
 class WaveBackground implements Background {
-  const WaveBackground();
+  const WaveBackground({
+    required this.wide,
+  });
+
+  final bool wide;
 
   @override
   void paint(
@@ -17,9 +21,12 @@ class WaveBackground implements Background {
     double value,
   ) {
     final width = size.width;
-    final top = Offset(0, keyInfo.offset.dy - _totalHeight / 2)
+    final topOffset = wide ? _wideHeight / 2 : 0;
+    final bottomOffset = wide ? _wideHeight : _narrowHeight;
+
+    final top = Offset(0, keyInfo.offset.dy - topOffset)
         .let((it) => it - canvasInfo.offset);
-    final bottom = Offset(width, keyInfo.offset.dy + _totalHeight)
+    final bottom = Offset(width, keyInfo.offset.dy + bottomOffset)
         .let((it) => it - canvasInfo.offset);
 
     // Control points for bezier
@@ -50,4 +57,5 @@ class WaveBackground implements Background {
   }
 }
 
-const _totalHeight = 190.0;
+const _wideHeight = 190.0;
+const _narrowHeight = 400.0;

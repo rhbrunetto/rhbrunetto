@@ -5,6 +5,7 @@ import '../../../../core/layout_wrapper.dart';
 import '../../../../gen/assets.gen.dart';
 import '../../../../l10n/l10n.dart';
 import '../../../../ui/painters/background_painter.dart';
+import '../../../../ui/painters/backgrounds/bubble.dart';
 import '../../../../ui/painters/backgrounds/wave.dart';
 import '../../../../ui/painters/curves_painter.dart';
 import '../section.dart';
@@ -20,7 +21,11 @@ class SecondSectionScreen extends StatelessWidget {
     return LayoutWrapper(
       builder: (context, mode) => BackgroundPainter(
         backgroundMapper: {
-          keys.elementAt(1): const WaveBackground(),
+          keys.elementAt(1): WaveBackground(wide: mode == LayoutMode.web),
+          keys.elementAt(2): const BubbleBackground(
+            radius: 100,
+            offset: FractionalOffset.topCenter,
+          ),
         },
         child: CurvesPainter(
           indexKeys: keys,

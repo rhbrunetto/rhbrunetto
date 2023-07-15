@@ -22,10 +22,10 @@ class FirstSectionScreen extends StatelessWidget {
       builder: (context, mode) => BackgroundPainter(
         backgroundMapper: {
           keys.elementAt(0): const BubbleBackground(radius: 60),
-          keys.elementAt(1): const WaveBackground(),
+          keys.elementAt(1): WaveBackground(wide: mode == LayoutMode.web),
           keys.elementAt(2): const BubbleBackground(
             radius: 80,
-            offset: FractionalOffset.bottomCenter,
+            offset: FractionalOffset.topCenter,
           ),
         },
         child: CurvesPainter(
